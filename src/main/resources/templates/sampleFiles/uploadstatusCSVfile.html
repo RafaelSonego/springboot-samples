@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+layout:decorator="'layout/default-layout'">
+
+<!-- Here we are using defaul-layout.html page where we have the head, footer etc - only the section tag will be populated using this page
+Check the layout:decorator -->
+
+<head>
+	<script>
+		function createFileName(element) {
+		    var csvColumnSelected = element.options[element.selectedIndex].value;
+		    var txtFileName = document.getElementById("fileName");
+		    if(txtFileName.value === "") {
+			    txtFileName.value = csvColumnSelected;
+		    }else {
+			    txtFileName.value = txtFileName.value + "," + csvColumnSelected;
+		    }
+		}
+		
+		function createContent(element) {
+		    var csvColumnSelected = element.options[element.selectedIndex].value;
+		    var txtFileContent = document.getElementById("fileContent");
+		    txtFileContent.value = csvColumnSelected;
+		}
+
+	</script>
+</head>
+
+<body>	
+	<section layout:fragment="content">
+
+		<div class="page-header">
+			<div class="container-fluid">
+				<h1>
+					File Upload Status
+				</h1>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+		    <div class="row">
+		        <div class="col-sm-12">
+		            <h1>File Upload Status - File Name: <b><span th:text="${csvName}"></span></b></h1>
+		            <!--display error if any-->
+					<div class="alert  alert-danger  alert-dismissible" role="alert" th:if="${!status}">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<i class="fa  fa-exclamation-circle"></i> <span th:text="${message}"></span>
+					</div>
+					
+					<div class="form-group" th:if="${status}">
+						<form method="GET" th:action="@{/export-csv-file}" enctype="multipart/form-data" class="form-vertical js-form-loading">
+							 <input type="hidden" id="csvFileName" name="csvFileName" th:value="${csvName}">
+							<div class="row">
+								<div class="col-sm-2 form-group">
+									<label for="csvFilneNameColumns">CSV Columns</label>
+									<select id="csvFilneNameColumns" name="csvFilneNameColumns" class="form-control" onChange="createFileName(this);">
+										<option value="-1"></option>
+										<option value="column1">Column1</option>
+										<option value="column2">Column2</option>
+										<option value="column3">Column3</option>
+										<option value="column4">Column4</option>
+										<option value="column5">Column5</option>
+										<option value="column6">Column6</option>
+										<option value="column7">Column7</option>
+										<option value="column8">Column8</option>
+									</select>
+								</div>
+								<div class="col-sm-8 form-group">
+									<label for="fileName">File Name</label>
+									<input name="fileName" id="fileName" placeholder="File Name Columns" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-2 form-group">
+									<label for="csvContentColumns">CSV Columns</label>
+									<select id="csvContentColumns" name="csvColumns" class="form-control" onChange="createContent(this);">
+										<option value="-1"></option>
+										<option value="column1">Column1</option>
+										<option value="column2">Column2</option>
+										<option value="column3">Column3</option>
+										<option value="column4">Column4</option>
+										<option value="column5">Column5</option>
+										<option value="column6">Column6</option>
+										<option value="column7">Column7</option>
+										<option value="column8">Column8</option>
+									</select>
+								</div>
+								<div class="col-sm-8 form-group">
+									<label for="fileContent">Content</label>
+									<input name="fileContent" id="fileContent" placeholder="Content Column" class="form-control" type="text">
+								</div>
+							</div>
+							
+							<div class="row">
+								<div class="col-sm-2 form-group">
+							    	<button type="reset" class="btn btn-primary">Clear</button>
+								</div>
+								<div class="col-sm-2 form-group">
+								    <button type="submit" class="btn btn-primary">Generate</button>
+							    </div>
+						    </div>
+						</form>					
+					</div>
+					
+		            <!--display users list-->
+		            <table class="table table-striped" th:if="${status}">
+		                <thead>
+		                <tr>
+		                    <th scope="col">#</th>
+		                    <th scope="col">Column1</th>
+		                    <th scope="col">Column2</th>
+		                    <th scope="col">Column3</th>
+		                    <th scope="col">Column4</th>
+		                    <th scope="col">Column5</th>
+   		                    <th scope="col">Column6</th>
+   		                    <th scope="col">Column7</th>
+   		                    <th scope="col">Column8</th>
+		                </tr>
+		                </thead>
+		                <tbody>
+		                <tr th:each="filerow, i : ${fileRows}">
+		                    <th scope="row" th:text="${i.index + 1}"></th>
+		                    <td th:text="${filerow.column_1}"></td>
+		                    <td th:text="${filerow.column_2}"></td>
+		                    <td th:text="${filerow.column_3}"></td>
+		                    <td th:text="${filerow.column_4}"></td>
+		                    <td th:text="${filerow.column_5}"></td>
+		                    <td th:text="${filerow.column_6}"></td>
+		                    <td th:text="${filerow.column_7}"></td>
+		                    <td th:text="${filerow.column_8}"></td>
+		                </tr>
+		                </tbody>
+		            </table>
+		        </div>
+		    </div>
+		</div>
+
+	</section>
+	
+</body>
+</html>

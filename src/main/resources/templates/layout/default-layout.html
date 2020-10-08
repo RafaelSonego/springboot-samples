@@ -24,13 +24,13 @@ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 	<body>
 		<div class="aw-layout-page">
 	
-			<div th:replace="/layout/fragments/template_nav :: navbar"></div>
+			<div th:replace="layout/fragments/template_nav :: navbar"></div>
 			
-			<div th:replace="/layout/fragments/template_aside :: aside"></div>
+			<div th:replace="layout/fragments/template_aside :: aside"></div>
 	
 			<section class="aw-layout-content  js-content" layout:fragment="content"></section>
 			
-			<div th:replace="/layout/fragments/template_footer :: footer"></div>
+			<div th:replace="layout/fragments/template_footer :: footer"></div>
 			
 		</div>
 		

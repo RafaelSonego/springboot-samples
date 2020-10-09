@@ -1,25 +1,25 @@
-package com.rafaelsilva.samples.samples.DTO;
+package com.rafaelsilva.samples.samples.dto;
 
-import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
 
 public class CSVFileDTO {
 
 	private String fileName;
-	@CsvBindByName(column = "A")
+	@CsvBindByPosition(position = 0)
 	private String column_1;
-	@CsvBindByName(column = "B")
+	@CsvBindByPosition(position = 1)
 	private String column_2;
-	@CsvBindByName(column = "C")
+	@CsvBindByPosition(position = 2)
 	private String column_3;
-	@CsvBindByName(column = "D")
+	@CsvBindByPosition(position = 3)
 	private String column_4;
-	@CsvBindByName(column = "E")
+	@CsvBindByPosition(position = 4)
 	private String column_5;
-	@CsvBindByName(column = "F")
+	@CsvBindByPosition(position = 5)
 	private String column_6;
-	@CsvBindByName(column = "G")
+	@CsvBindByPosition(position = 6)
 	private String column_7;
-	@CsvBindByName(column = "H")
+	@CsvBindByPosition(position = 7)
 	private String column_8;
 
 	public CSVFileDTO() {
@@ -99,6 +99,9 @@ public class CSVFileDTO {
 	}
 
 	public boolean isAllPropertiesNull() {
-		return (column_1 == null || column_1.trim().isEmpty());
+		return (column_1 == null || column_1.trim().isEmpty()) && (column_2 == null || column_2.trim().isEmpty())
+				&& (column_3 == null || column_3.trim().isEmpty()) && (column_4 == null || column_4.trim().isEmpty())
+				&& (column_5 == null || column_5.trim().isEmpty()) && (column_6 == null || column_6.trim().isEmpty())
+				&& (column_7 == null || column_7.trim().isEmpty()) && (column_8 == null || column_8.trim().isEmpty());
 	}
 }

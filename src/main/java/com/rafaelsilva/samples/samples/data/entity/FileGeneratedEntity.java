@@ -17,6 +17,9 @@ public class FileGeneratedEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	@Column(name = "CSV_FILE_NAME")
+	private String csvFileName;
+	
 	@Column(name = "FILE_NAME")
 	private String fileName;
 
@@ -33,6 +36,14 @@ public class FileGeneratedEntity {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getCsvFileName() {
+		return csvFileName;
+	}
+
+	public void setCsvFileName(String csvFileName) {
+		this.csvFileName = csvFileName;
 	}
 
 	public String getFileName() {
@@ -61,8 +72,8 @@ public class FileGeneratedEntity {
 
 	@Override
 	public String toString() {
-		return "FileGeneratedEntity [id=" + id + ", fileName=" + fileName + ", fileContent=" + fileContent
-				+ ", fileDateCreation=" + fileDateCreation + "]";
+		return "FileGeneratedEntity [id=" + id + ", csvFileName=" + csvFileName + ", fileName=" + fileName
+				+ ", fileContent=" + fileContent + ", fileDateCreation=" + fileDateCreation + "]";
 	}
 
 }

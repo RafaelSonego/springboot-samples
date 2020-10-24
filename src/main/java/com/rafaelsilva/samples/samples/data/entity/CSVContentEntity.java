@@ -12,8 +12,8 @@ public class CSVContentEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "FILE_NAME")
-	private String fileName;
+	@Column(name = "CSV_FILE_NAME")
+	private String csvFileName;
 	private String column1;
 	private String column2;
 	private String column3;
@@ -27,10 +27,10 @@ public class CSVContentEntity {
 
 	}
 
-	public CSVContentEntity(String fileName, String column1, String column2, String column3, String column4,
+	public CSVContentEntity(String csvFileName, String column1, String column2, String column3, String column4,
 			String column5, String column6, String column7, String column8) {
 		super();
-		this.fileName = fileName;
+		this.csvFileName = csvFileName;
 		this.column1 = column1;
 		this.column2 = column2;
 		this.column3 = column3;
@@ -49,12 +49,12 @@ public class CSVContentEntity {
 		this.id = id;
 	}
 
-	public String getFileName() {
-		return fileName;
+	public String getCsvFileName() {
+		return csvFileName;
 	}
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setCsvFileName(String csvFileName) {
+		this.csvFileName = csvFileName;
 	}
 
 	public String getColumn1() {
@@ -123,9 +123,9 @@ public class CSVContentEntity {
 
 	@Override
 	public String toString() {
-		return "CSVContentEntity [fileName=" + fileName + ", column1=" + column1 + ", column2=" + column2 + ", column3="
-				+ column3 + ", column4=" + column4 + ", column5=" + column5 + ", column6=" + column6 + ", column7="
-				+ column7 + ", column8=" + column8 + "]";
+		return "CSVContentEntity [id=" + id + ", csvFileName=" + csvFileName + ", column1=" + column1 + ", column2="
+				+ column2 + ", column3=" + column3 + ", column4=" + column4 + ", column5=" + column5 + ", column6="
+				+ column6 + ", column7=" + column7 + ", column8=" + column8 + "]";
 	}
 
 }

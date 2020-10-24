@@ -8,6 +8,6 @@ import com.rafaelsilva.samples.samples.data.entity.CSVContentEntity;
 
 public interface CSVContentRepository extends CrudRepository<CSVContentEntity, Integer> {
 
-	List<CSVContentEntity> findByFileName(String fileName);
+	List<CSVContentEntity> findByCsvFileName(String csvFileName);
 	
 }

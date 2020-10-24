@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rafaelsilva.samples.samples.DTO.CSVFileDTO;
+import com.rafaelsilva.samples.samples.dto.CSVFileDTO;
 import com.rafaelsilva.samples.samples.service.CSVFileService;
 
 @Controller
@@ -33,8 +33,6 @@ public class CSVFileController {
 	@RequestMapping(method = RequestMethod.POST, path = "/upload-csv-file")
 	public String uploadCSVFileUsingCsvToBean(Model model, @RequestParam("fileSeparator") char fileSeparator, @RequestParam("file") MultipartFile file) {
 		try {
-			
-			
 			List<CSVFileDTO> listCSVFiles = csvFileService.CSVToBean(file, fileSeparator);
 
 			if (listCSVFiles.size() == 0) {
@@ -42,8 +40,6 @@ public class CSVFileController {
 				model.addAttribute("status", false);
 				return "sampleFiles/selectCSVfile";
 			}
-			
-			csvFileService.persistCSVContent(listCSVFiles);
 
 			// save list on the model
 			model.addAttribute("csvName", file.getOriginalFilename());
@@ -61,8 +57,8 @@ public class CSVFileController {
 	}
 	
 
-	@RequestMapping(method = RequestMethod.GET, path = "/export-csv-file", produces="application/zip")
-	public void generatefiles(HttpServletResponse response, @RequestParam("csvFileName") String csvFileName, @RequestParam("fileName") String customFileName,
+	@RequestMapping(method = RequestMethod.GET, path = "/exportZipFile", produces="application/zip")
+	public void exportZipFile(HttpServletResponse response, @RequestParam("csvFileName") String csvFileName, @RequestParam("fileName") String customFileName,
 			@RequestParam("fileContent") String customFileContent) {
 		try {
 		    //setting headers  
@@ -72,6 +68,7 @@ public class CSVFileController {
 			csvFileService.exportCustomFiles(response.getOutputStream(), csvFileName, customFileName, customFileContent);
 			
 		} catch (Exception ex) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			LOGGER.error(ex.getMessage());
 		}
 

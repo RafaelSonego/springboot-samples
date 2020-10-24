@@ -5,10 +5,9 @@ import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -21,9 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rafaelsilva.samples.samples.DTO.CSVFileDTO;
 import com.rafaelsilva.samples.samples.data.entity.CSVContentEntity;
 import com.rafaelsilva.samples.samples.data.repository.CSVContentRepository;
+import com.rafaelsilva.samples.samples.dto.CSVFileDTO;
+import com.rafaelsilva.samples.samples.dto.CustomFilesDTO;
 import com.rafaelsilva.samples.samples.helper.CSVHelper;
 
 @Service
@@ -46,8 +46,8 @@ public class CSVFileService {
 		}
 		try {
 			String originalFilename = file.getOriginalFilename();
-			List<CSVFileDTO> listCSVFile = csvHelper.CSVToBean(file, fileSeparator);
-			Iterator<CSVFileDTO> interatorCSVFile = listCSVFile.iterator();
+			List<CSVFileDTO> listCSVFiles = csvHelper.CSVToBean(file, fileSeparator);
+			Iterator<CSVFileDTO> interatorCSVFile = listCSVFiles.iterator();
 			while (interatorCSVFile.hasNext()) {
 				CSVFileDTO csvFileDTO = interatorCSVFile.next();
 				if (csvFileDTO.isAllPropertiesNull()) {
@@ -56,7 +56,8 @@ public class CSVFileService {
 					csvFileDTO.setFileName(originalFilename);
 				}
 			}
-			return listCSVFile;
+			persistCSVContent(listCSVFiles);
+			return listCSVFiles;
 		} catch (Exception ex) {
 			LOGGER.error("Error to parse CSV content to bean - " + ex.getCause());
 			throw ex;
@@ -74,22 +75,29 @@ public class CSVFileService {
 				csvContentRepository.save(entity);
 			}
 		} catch (Exception ex) {
+			LOGGER.error("Error to persist CSV Content - " + ex.getCause());
 			throw ex;
 		}
 	}
 
 	public ZipOutputStream exportCustomFiles(OutputStream outputStream, String csvFileName, String customFileName, String customFileContent) throws Exception {
 		try {
-			List<CSVContentEntity> listCSVContent = csvContentRepository.findByFileName(csvFileName);
+			List<CSVContentEntity> listCSVContent = csvContentRepository.findByCsvFileName(csvFileName);
 			String[] dynamicFieldNameArray = customFileName.split(",");
 			
 	        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-
+	        HashSet<CustomFilesDTO> customFilesHashSet = new HashSet<CustomFilesDTO>();
+	        
 			for (CSVContentEntity csvContentEntity : listCSVContent) {
 				String extractedCustomFileName = extractCustomFileName(dynamicFieldNameArray, csvContentEntity);
 				String extractedCustomContentFile = extractCustomContentFile(customFileContent, csvContentEntity);
-				
-				File fileToZip = createCustomFile(extractedCustomFileName, extractedCustomContentFile);
+
+				//avoid files with the same name. CustomFilesDTO equals method is checking for the FileName
+				customFilesHashSet.add(new CustomFilesDTO(extractedCustomFileName, extractedCustomContentFile));
+			}
+			
+			for (CustomFilesDTO customFilesDTO : customFilesHashSet) {
+				File fileToZip = createCustomFile(customFilesDTO.getCustomFileName(), customFilesDTO.getCustomFileContent());
 
 		        //new zip entry and copying inputstream with file to zipOutputStream, after all closing streams
 		        zipOutputStream.putNextEntry(new ZipEntry(fileToZip.getName()));
@@ -98,8 +106,9 @@ public class CSVFileService {
 		        IOUtils.copy(fileInputStream, zipOutputStream);
 
 		        fileInputStream.close();
-		        zipOutputStream.closeEntry();
+		        zipOutputStream.closeEntry();				
 			}
+
 			zipOutputStream.close();
 			
 			return zipOutputStream;
@@ -108,7 +117,7 @@ public class CSVFileService {
 		}
 	}
 
-	private File createCustomFile(String customFileName, String customContentFile) throws FileNotFoundException, IOException {
+	private File createCustomFile(String customFileName, String customContentFile) throws Exception {
 		File fileToZip = new File(customFileName);
 		FileOutputStream fos = new FileOutputStream(fileToZip);
 		DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));

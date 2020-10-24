@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.rafaelsilva.samples.samples.DTO.CSVFileDTO;
+import com.rafaelsilva.samples.samples.dto.CSVFileDTO;
 
 @Component
 public class CSVHelper {

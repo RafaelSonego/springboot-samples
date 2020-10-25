@@ -29,6 +29,11 @@ public class CSVFileController {
 		model.addAttribute("status", true);
 		return "sampleFiles/selectCSVfile";
 	}
+	
+	@RequestMapping(method = RequestMethod.GET, path = "/start")
+	public String start(Model model) {
+		return "index";
+	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/upload-csv-file")
 	public String uploadCSVFileUsingCsvToBean(Model model, @RequestParam("fileSeparator") char fileSeparator, @RequestParam("file") MultipartFile file) {

@@ -1,4 +1,4 @@
-package com.rafaelsilva.samples.samples.helper;
+package com.rafaelsilva.springbootsamples.samples.helper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.rafaelsilva.samples.samples.dto.CSVFileDTO;
+import com.rafaelsilva.springbootsamples.samples.dto.CSVFileDTO;
 
 @Component
 public class CSVHelper {

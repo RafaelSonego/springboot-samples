@@ -1,4 +1,4 @@
-package com.rafaelsilva.samples.samples.data.entity;
+package com.rafaelsilva.springbootsamples.samples.data.entity;
 
 import java.sql.Timestamp;
 

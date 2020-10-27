@@ -1,4 +1,4 @@
-package com.rafaelsilva.samples.samples.dto;
+package com.rafaelsilva.springbootsamples.samples.dto;
 
 public class CustomFilesDTO {
 

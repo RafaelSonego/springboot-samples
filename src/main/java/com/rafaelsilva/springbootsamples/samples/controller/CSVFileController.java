@@ -1,4 +1,4 @@
-package com.rafaelsilva.samples.samples.controller;
+package com.rafaelsilva.springbootsamples.samples.controller;
 
 import java.util.List;
 
@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
-import com.rafaelsilva.samples.samples.dto.CSVFileDTO;
-import com.rafaelsilva.samples.samples.service.CSVFileService;
+import com.rafaelsilva.springbootsamples.samples.dto.CSVFileDTO;
+import com.rafaelsilva.springbootsamples.samples.service.CSVFileService;
 
 @Controller
 public class CSVFileController {
@@ -23,44 +24,36 @@ public class CSVFileController {
 	@Autowired
 	private CSVFileService csvFileService;
 
-	@RequestMapping(method = RequestMethod.GET, path = "/")
-	public String index(Model model) {
+	@RequestMapping(method = RequestMethod.GET, path = "/importCSVFile")
+	public String importCSVFile(Model model) {
 		model.addAttribute("message", "Select a file to upload!");
 		model.addAttribute("status", true);
-		return "sampleFiles/selectCSVfile";
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, path = "/start")
-	public String start(Model model) {
-		return "index";
+		return "sampleFiles/importCSVFile";
 	}
 
 	@RequestMapping(method = RequestMethod.POST, path = "/upload-csv-file")
-	public String uploadCSVFileUsingCsvToBean(Model model, @RequestParam("fileSeparator") char fileSeparator, @RequestParam("file") MultipartFile file) {
+	public ModelAndView uploadCSVFileUsingCsvToBean(@RequestParam("fileSeparator") char fileSeparator, @RequestParam("file") MultipartFile file) {
 		try {
 			List<CSVFileDTO> listCSVFiles = csvFileService.CSVToBean(file, fileSeparator);
-
+			ModelAndView mv = new ModelAndView("sampleFiles/uploadstatusCSVfile");
+			
 			if (listCSVFiles.size() == 0) {
-				model.addAttribute("message", "The file selected does not contain values or the separator selected is not correct.");
-				model.addAttribute("status", false);
-				return "sampleFiles/selectCSVfile";
+				throw new Exception("The file selected does not contain values or the separator selected is not correct.");
+			}else {
+				// save list on the model
+				mv.addObject("csvName", file.getOriginalFilename());
+				mv.addObject("fileRows", listCSVFiles);
+				mv.addObject("status", true);				
 			}
-
-			// save list on the model
-			model.addAttribute("csvName", file.getOriginalFilename());
-			model.addAttribute("fileRows", listCSVFiles);
-			model.addAttribute("status", true);
-
+			return mv;
 		} catch (Exception ex) {
 			LOGGER.error(ex.getMessage());
-			model.addAttribute("message", "An error occurred while processing the CSV file.");
-			model.addAttribute("status", false);
-			return "sampleFiles/selectCSVfile";
+			ModelAndView mv = new ModelAndView("sampleFiles/importCSVFile");
+			mv.addObject("message", "An error occurred while processing the CSV file.");
+			mv.addObject("status", false);
+			return mv;
 		}
-
-		return "sampleFiles/uploadstatusCSVfile";
 	}
-	
 
 	@RequestMapping(method = RequestMethod.GET, path = "/exportZipFile", produces="application/zip")
 	public void exportZipFile(HttpServletResponse response, @RequestParam("csvFileName") String csvFileName, @RequestParam("fileName") String customFileName,

@@ -1,4 +1,4 @@
-package com.rafaelsilva.samples.samples.service;
+package com.rafaelsilva.springbootsamples.samples.service;
 
 import java.beans.PropertyDescriptor;
 import java.io.BufferedOutputStream;
@@ -20,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.rafaelsilva.samples.samples.data.entity.CSVContentEntity;
-import com.rafaelsilva.samples.samples.data.repository.CSVContentRepository;
-import com.rafaelsilva.samples.samples.dto.CSVFileDTO;
-import com.rafaelsilva.samples.samples.dto.CustomFilesDTO;
-import com.rafaelsilva.samples.samples.helper.CSVHelper;
+import com.rafaelsilva.springbootsamples.samples.data.entity.CSVContentEntity;
+import com.rafaelsilva.springbootsamples.samples.data.repository.CSVContentRepository;
+import com.rafaelsilva.springbootsamples.samples.dto.CSVFileDTO;
+import com.rafaelsilva.springbootsamples.samples.dto.CustomFilesDTO;
+import com.rafaelsilva.springbootsamples.samples.helper.CSVHelper;
 
 @Service
 public class CSVFileService {

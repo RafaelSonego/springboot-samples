@@ -1,8 +1,8 @@
-package com.rafaelsilva.samples.samples.data.repository;
+package com.rafaelsilva.springbootsamples.samples.data.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.rafaelsilva.samples.samples.data.entity.FileGeneratedEntity;
+import com.rafaelsilva.springbootsamples.samples.data.entity.FileGeneratedEntity;
 
 public interface FileGeneratedRepository extends CrudRepository<FileGeneratedEntity, Integer>{
 

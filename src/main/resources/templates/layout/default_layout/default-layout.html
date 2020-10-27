@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" 
+xmlns:th="http://www.thymeleaf.org" 
+xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	
+		<title>Rafael Silva Samples</title>
+		
+		<!-- Bootstrap core CSS -->
+		<link rel="stylesheet" th:href="@{/layout/vendors/bootstrap/css/bootstrap.min.css}" />
+
+	    <style>
+	      .bd-placeholder-img {
+	        font-size: 1.125rem;
+	        text-anchor: middle;
+	        -webkit-user-select: none;
+	        -moz-user-select: none;
+	        -ms-user-select: none;
+	        user-select: none;
+	      }
+	
+	      @media (min-width: 768px) {
+	        .bd-placeholder-img-lg {
+	          font-size: 3.5rem;
+	        }
+	      }
+	    </style>
+	    
+	    <!-- Custom styles for this template -->
+		<link rel="stylesheet" th:href="@{/layout/css/default.css}" />
+	
+	</head>
+
+	<body>
+		<div>
+	
+			<div th:replace="layout/default_layout/fragments/default_template_header :: header"></div>
+			
+			<div th:replace="layout/default_layout/fragments/default_template_menu :: sidebarMenu"></div>
+
+			<section>
+			   <div class="container-fluid">
+			      <div class="row">
+			         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" layout:fragment="content"></main>
+			      </div>
+			   </div>
+			</section>
+		
+		</div> 
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+		<script th:src="@{/layout/vendors/jquery/jquery.slim.min.js}"></script>
+		<script th:src="@{/layout/vendors/bootstrap/js/bootstrap.bundle.min.js}"></script>
+		<script th:src="@{/layout/javascripts/default.js}"></script>
+		
+	</body>
+</html>

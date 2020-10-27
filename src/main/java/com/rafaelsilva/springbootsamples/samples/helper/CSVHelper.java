@@ -41,6 +41,7 @@ public class CSVHelper {
             CsvToBean<CSVFileDTO> csvToBean = new CsvToBeanBuilder<CSVFileDTO>(reader)
                     .withType(CSVFileDTO.class)
                     .withIgnoreLeadingWhiteSpace(true)
+                    .withIgnoreQuotations(true)
                     .withSeparator(fileSeparator)
                     .build();
             
